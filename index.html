@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sang-Hyun Seong — Accounting meets AI</title>
+<meta name="description" content="Accounting professional building a self-directed, five-app portfolio of AI-powered accounting tools. Two apps deployed and live." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --cream:#FAF7EF;
+    --cream-2:#F2ECDF;
+    --ink:#1D1B16;
+    --ink-soft:#57534B;
+    --muted:#8A857B;
+    --gold:#AC833A;
+    --gold-soft:#C6A467;
+    --navy:#191A2E;
+    --navy-2:#262845;
+    --card:#FFFFFF;
+    --line:rgba(29,27,22,0.055);
+    --border:rgba(29,27,22,0.09);
+    --blue:#DEE7F5; --blue-ink:#3E5C8A;
+    --purple:#E7E1F6; --purple-ink:#6B54A6;
+    --pink:#F8E3E7; --pink-ink:#B0546A;
+    --green:#3E8E6B; --amber:#C08A2E; --red:#C0553F;
+    --serif:'Playfair Display',Georgia,'Times New Roman',serif;
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--cream);
+    background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 51px,var(--line) 51px,var(--line) 52px);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);display:inline-flex;align-items:center;gap:12px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--gold);display:inline-block}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.08;letter-spacing:-.01em;color:var(--ink)}
+  .display-italic{font-style:italic;color:var(--gold)}
+  p{color:var(--ink-soft)}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:500;font-size:15px;
+    padding:14px 26px;border-radius:999px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,background .18s ease;
+    border:1px solid transparent;
+  }
+  .btn-dark{background:var(--navy);color:#fff}
+  .btn-dark:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(25,26,46,.24)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--border)}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
+  .btn-gold{background:var(--gold);color:#fff}
+  .btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(172,131,58,.3)}
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(250,247,239,.82);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{font-family:var(--serif);font-weight:600;font-size:19px;display:flex;align-items:center;gap:10px}
+  .brand .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+  .nav-links{display:flex;align-items:center;gap:30px}
+  .nav-links a{font-size:14.5px;color:var(--ink-soft);transition:color .16s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links .btn{padding:9px 20px;font-size:14px}
+  .nav-toggle{display:none;background:none;border:0;cursor:pointer;font-size:22px;color:var(--ink)}
+
+  /* HERO */
+  .hero{padding:84px 0 56px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+  .hero h1{font-size:clamp(46px,6.4vw,82px);margin:22px 0 26px}
+  .hero p.lead{font-size:19px;max-width:520px;color:var(--ink-soft)}
+  .hero p.lead b{color:var(--ink);font-weight:600}
+  .hero-cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+
+  /* stacked app mockups in hero */
+  .mockstack{position:relative;height:430px}
+  .mock{
+    position:absolute;background:#fff;border:1px solid var(--border);border-radius:14px;
+    box-shadow:0 24px 60px rgba(29,27,22,.13);padding:14px;font-family:var(--sans);
+  }
+  .mock .bar{display:flex;gap:6px;align-items:center;margin-bottom:12px}
+  .mock .bar i{width:9px;height:9px;border-radius:50%;background:#E4DFD4;display:inline-block}
+  .mock .bar .u{margin-left:8px;font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.02em}
+  .mock .ttl{font-weight:600;font-size:12.5px;display:flex;align-items:center;gap:7px;margin-bottom:10px}
+  .m-prepare{top:0;right:0;width:290px;z-index:3}
+  .m-cassia{top:150px;left:-4px;width:250px;z-index:2}
+  .m-lucent{top:250px;right:18px;width:250px;z-index:1}
+  .row{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;padding:5px 0;border-top:1px solid #F0ECE2}
+  .row:first-of-type{border-top:0}
+  .row .k{color:var(--muted);font-family:var(--mono);letter-spacing:.02em}
+  .row .v{font-weight:500;color:var(--ink)}
+  .badge{font-family:var(--mono);font-size:8.5px;padding:2px 7px;border-radius:999px;letter-spacing:.03em}
+  .b-green{background:#E6F1EA;color:var(--green)}
+  .b-amber{background:#F6ECD6;color:var(--amber)}
+  .b-blue{background:#E4ECF7;color:var(--blue-ink)}
+  .chip{display:inline-block;background:#EFEBE1;font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:6px;color:var(--ink-soft)}
+  .bubble{background:var(--purple);color:var(--purple-ink);font-size:10px;padding:6px 10px;border-radius:10px;display:inline-block;margin-bottom:8px}
+  .barchart{display:flex;align-items:flex-end;gap:5px;height:44px;margin-top:6px}
+  .barchart span{flex:1;background:var(--gold-soft);border-radius:2px 2px 0 0;opacity:.85}
+  .tier{display:flex;gap:6px;margin:8px 0}
+  .tier div{flex:1;text-align:center;padding:7px 0;border-radius:8px;background:#F6F3EC}
+  .tier .n{font-family:var(--serif);font-size:17px;font-weight:600;display:block;line-height:1}
+  .tier .l{font-family:var(--mono);font-size:7.5px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+
+  /* STATS BAR */
+  .stats{margin-top:26px}
+  .stats-card{
+    background:#fff;border:1px solid var(--border);border-radius:16px;
+    display:grid;grid-template-columns:repeat(4,1fr);box-shadow:0 12px 34px rgba(29,27,22,.06);
+  }
+  .stat{padding:26px 20px;text-align:center;border-left:1px solid var(--border)}
+  .stat:first-child{border-left:0}
+  .stat .big{font-family:var(--serif);font-size:27px;font-weight:600;letter-spacing:.01em}
+  .stat .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+  /* SECTION SHELL */
+  section{padding:96px 0}
+  .sec-head h2{font-size:clamp(30px,4vw,46px);margin:18px 0 0}
+  .sec-head p.sub{margin-top:16px;max-width:560px;font-size:16.5px}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;margin-top:44px;align-items:start}
+  .about-copy p{margin-bottom:18px;font-size:16px}
+  .about-copy .hl{color:var(--ink);font-weight:600}
+  .pullquote{
+    border-left:3px solid var(--gold);background:linear-gradient(90deg,rgba(172,131,58,.07),transparent);
+    padding:18px 22px;border-radius:0 10px 10px 0;margin-top:28px;
+    font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink);line-height:1.45;
+  }
+  .info-cards{display:flex;flex-direction:column;gap:14px}
+  .info-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px 22px;transition:transform .18s,box-shadow .18s}
+  .info-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(29,27,22,.08)}
+  .info-card .tag{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+  .info-card h4{font-family:var(--serif);font-size:18px;font-weight:600;margin:8px 0 5px}
+  .info-card small{font-size:13.5px;color:var(--muted);line-height:1.5;display:block}
+
+  /* PROJECTS */
+  .portfolio-note{
+    background:#fff;border:1px solid var(--border);border-radius:16px;padding:30px 34px;margin:38px 0 46px;
+    display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;box-shadow:0 12px 30px rgba(29,27,22,.05);
+  }
+  .portfolio-note .arc{font-family:var(--serif);font-size:15px;line-height:1.6;color:var(--ink);font-style:italic}
+  .arc-steps{display:flex;flex-wrap:wrap;gap:8px}
+  .arc-steps span{font-family:var(--mono);font-size:11px;padding:6px 12px;border-radius:999px;border:1px solid var(--border);color:var(--ink-soft);white-space:nowrap}
+  .arc-steps span b{color:var(--gold);font-weight:500}
+  .proj{
+    background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:30px;
+    display:grid;grid-template-columns:1fr 1fr;box-shadow:0 14px 40px rgba(29,27,22,.06);
+  }
+  .proj.rev .proj-visual{order:2}
+  .proj-visual{padding:44px 40px;display:flex;align-items:center;justify-content:center;min-height:330px}
+  .pv-blue{background:linear-gradient(160deg,var(--blue),#EDF2FA)}
+  .pv-purple{background:linear-gradient(160deg,var(--purple),#F1EDFA)}
+  .pv-pink{background:linear-gradient(160deg,var(--pink),#FBEFF2)}
+  .proj-body{padding:40px 40px}
+  .proj-num{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase}
+  .proj-body h3{font-size:26px;margin:12px 0 4px;line-height:1.12}
+  .proj-status{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:4px 11px;border-radius:999px;margin-bottom:14px}
+  .st-live{background:#E6F1EA;color:var(--green)}
+  .st-built{background:#F6ECD6;color:var(--amber)}
+  .st-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .proj-body p.desc{font-size:15px;color:var(--ink-soft);margin-bottom:16px}
+  .feat{list-style:none;margin-bottom:18px}
+  .feat li{font-size:14px;color:var(--ink-soft);padding:5px 0 5px 26px;position:relative}
+  .feat li::before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:700;font-size:13px}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
+  .tags .chip{background:#F1EDE3}
+  .proj-links{display:flex;gap:11px;flex-wrap:wrap}
+  .proj-links .btn{padding:11px 20px;font-size:14px}
+
+  /* the two self-directed + hub band */
+  .arc-band{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:6px}
+  .arc-card{background:#fff;border:1px dashed var(--border);border-radius:16px;padding:26px 24px;transition:transform .18s,border-color .18s}
+  .arc-card:hover{transform:translateY(-4px);border-color:var(--gold-soft)}
+  .arc-card.hub{border-style:solid;background:linear-gradient(165deg,#fff,#FBF7EE)}
+  .arc-card .k{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)}
+  .arc-card h4{font-family:var(--serif);font-size:20px;font-weight:600;margin:9px 0 8px}
+  .arc-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+
+  /* STACK */
+  .stack{background:var(--cream-2);background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 51px,var(--line) 51px,var(--line) 52px)}
+  .stack-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
+  .tech{background:#fff;border:1px solid var(--border);border-radius:14px;padding:26px 22px;text-align:center;transition:transform .18s,box-shadow .18s}
+  .tech:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(29,27,22,.08)}
+  .tech .ic{font-size:26px;margin-bottom:12px;display:block}
+  .tech h4{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:6px}
+  .tech small{font-size:12.5px;color:var(--muted);line-height:1.5;display:block}
+
+  /* JOURNEY */
+  .timeline{position:relative;margin-top:52px;padding-left:2px}
+  .timeline::before{content:"";position:absolute;left:calc(50% - 1px);top:8px;bottom:8px;width:2px;background:var(--border)}
+  .tl-item{display:grid;grid-template-columns:1fr 40px 1fr;align-items:start;margin-bottom:20px}
+  .tl-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px 24px;box-shadow:0 10px 26px rgba(29,27,22,.05)}
+  .tl-card .k{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+  .tl-card h4{font-family:var(--serif);font-size:18px;font-weight:600;margin:8px 0 6px}
+  .tl-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+  .tl-node{display:flex;justify-content:center;padding-top:24px}
+  .tl-node i{width:13px;height:13px;border-radius:50%;background:var(--gold);border:3px solid var(--cream);box-shadow:0 0 0 1px var(--border)}
+  .tl-left .tl-card{text-align:right}
+  .tl-right .empty,.tl-left .empty{visibility:hidden}
+  .k-gold{color:var(--gold)} .k-blue{color:var(--blue-ink)} .k-purple{color:var(--purple-ink)} .k-pink{color:var(--pink-ink)} .k-green{color:var(--green)}
+
+  /* CONTACT */
+  .contact-card{
+    background:linear-gradient(150deg,var(--navy),var(--navy-2));border-radius:24px;
+    padding:64px 40px;text-align:center;max-width:760px;margin:0 auto;position:relative;overflow:hidden;
+    box-shadow:0 30px 70px rgba(25,26,46,.3);
+  }
+  .contact-card::after{content:"";position:absolute;top:-40%;right:-10%;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(172,131,58,.28),transparent 70%)}
+  .contact-card h2{color:#fff;font-size:clamp(28px,3.6vw,40px);position:relative}
+  .contact-card p{color:rgba(255,255,255,.72);max-width:440px;margin:18px auto 30px;font-size:15.5px;position:relative}
+  .contact-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+
+  /* FOOTER */
+  footer{padding:56px 0 46px;text-align:center;border-top:1px solid var(--border)}
+  .foot-brand{font-family:var(--serif);font-size:20px;font-weight:600;display:inline-flex;align-items:center;gap:9px}
+  .foot-brand .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+  .foot-links{display:flex;gap:26px;justify-content:center;margin:20px 0 18px;flex-wrap:wrap}
+  .foot-links a{font-size:14px;color:var(--ink-soft)}
+  .foot-links a:hover{color:var(--ink)}
+  .foot-credit{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.03em}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+  /* RESPONSIVE */
+  @media (max-width:900px){
+    .nav-links{display:none}
+    .nav-toggle{display:block}
+    .hero-grid,.about-grid{grid-template-columns:1fr}
+    .mockstack{height:380px;margin-top:12px}
+    .proj,.proj.rev .proj-visual{grid-template-columns:1fr}
+    .proj.rev .proj-visual{order:0}
+    .stack-grid{grid-template-columns:repeat(2,1fr)}
+    .stats-card{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(3){border-left:0}
+    .stat{border-top:1px solid var(--border)}
+    .stat:nth-child(1),.stat:nth-child(2){border-top:0}
+    .arc-band{grid-template-columns:1fr}
+    .portfolio-note{grid-template-columns:1fr;gap:20px}
+    .timeline::before{left:7px}
+    .tl-item{grid-template-columns:16px 1fr;gap:14px}
+    .tl-node{padding-top:22px;justify-content:flex-start}
+    .tl-left .tl-card,.tl-left{text-align:left}
+    .tl-item>.tl-card:first-child{display:none}
+    .tl-left .empty,.tl-right .empty{display:none}
+  }
+  @media (max-width:560px){
+    .wrap{padding:0 20px}
+    section{padding:70px 0}
+    .stats-card{grid-template-columns:1fr}
+    .stat{border-left:0;border-top:1px solid var(--border)}
+    .stat:first-child{border-top:0}
+    .stack-grid{grid-template-columns:1fr}
+  }
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand"><span class="dot"></span>Sang-Hyun Seong</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#stack">Stack</a>
+      <a href="#journey">Journey</a>
+      <a href="#contact" class="btn btn-dark">Contact</a>
+    </div>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').style.display='flex';this.style.display='none'">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <span class="eyebrow">Accounting professional · AI builder</span>
+      <h1>Accounting<br>meets <span class="display-italic">AI.</span></h1>
+      <p class="lead">I build <b>AI-powered applications</b> that automate real accounting work — from statement reconciliation to audit-risk review. A <b>self-directed, five-app portfolio</b>, designed and built end to end. <b>Two deployed and live today.</b></p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-dark">View Projects →</a>
+        <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="mockstack">
+        <!-- PREPARE -->
+        <div class="mock m-prepare">
+          <div class="bar"><i></i><i></i><i></i><span class="u">PREPARE · reconciliation</span></div>
+          <div class="ttl">📄 Statement Reconciliation</div>
+          <div class="row"><span class="k">Beginning</span><span class="v">$3,000.00</span></div>
+          <div class="row"><span class="k">Deposits</span><span class="v">+$6,000.00</span></div>
+          <div class="row"><span class="k">Withdrawals</span><span class="v">−$4,820.00</span></div>
+          <div class="row"><span class="k">Ending (reported)</span><span class="v">$4,000.00</span></div>
+          <div class="row"><span class="k">Ending (implied)</span><span class="v badge b-amber">Needs review · $150</span></div>
+          <div style="margin-top:9px;display:flex;gap:6px"><span class="chip">31 included</span><span class="chip">8 excluded</span></div>
+        </div>
+        <!-- CASSIA -->
+        <div class="mock m-cassia">
+          <div class="bar"><i></i><i></i><i></i><span class="u">CASSIA · chat workspace</span></div>
+          <div class="bubble">What was Q3 marketing spend?</div>
+          <div class="row" style="border:0;padding-top:0"><span class="v" style="font-size:11px">$142,350 — up 12% from Q2</span><span class="badge b-blue">SQL</span></div>
+          <div class="barchart"><span style="height:40%"></span><span style="height:62%"></span><span style="height:55%"></span><span style="height:78%"></span><span style="height:68%"></span><span style="height:90%"></span></div>
+        </div>
+        <!-- LUCENT -->
+        <div class="mock m-lucent">
+          <div class="bar"><i></i><i></i><i></i><span class="u">LUCENT · review queue</span></div>
+          <div class="tier">
+            <div><span class="n" style="color:var(--red)">7</span><span class="l">High</span></div>
+            <div><span class="n" style="color:var(--amber)">12</span><span class="l">Medium</span></div>
+            <div><span class="n" style="color:var(--green)">981</span><span class="l">Monitor</span></div>
+          </div>
+          <div class="row"><span class="k">$4,790 · new vendor</span><span class="badge b-amber">override</span></div>
+          <div class="row"><span class="k">Weekend · round #</span><span class="badge b-blue">0.67</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="wrap stats reveal">
+    <div class="stats-card">
+      <div class="stat"><div class="big">2</div><div class="lbl">Deployed &amp; live</div></div>
+      <div class="stat"><div class="big">5</div><div class="lbl">App portfolio arc</div></div>
+      <div class="stat"><div class="big">AI · ML · RAG</div><div class="lbl">Core stack</div></div>
+      <div class="stat"><div class="big">Accounting</div><div class="lbl">Domain-built</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">About</span>
+      <h2>Where accounting<br>expertise meets AI.</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p>I started my career in <span class="hl">tax accounting at Rowshan &amp; Co</span>, doing full-cycle bookkeeping for 30+ small-business clients and spending hundreds of hours each tax season processing 1099s and W-2s by hand. That repetitive, error-prone work planted a question: <em>what if AI could handle this?</em></p>
+        <p>Pursuing my <span class="hl">M.S. in Business Analytics at Baruch College</span>, I went deep into Python, machine learning, and generative AI — not as abstract concepts, but as tools to solve the exact problems I'd lived through. The result is a <span class="hl">self-directed portfolio</span> of accounting applications: I own the design, the engineering, and the delivery, with high-level direction and career guidance from mentors in AI and engineering.</p>
+        <p>My edge isn't just knowing Python or AI. It's understanding <span class="hl">why a TIN mismatch on a 1099-NEC matters</span>, what auditors actually look for in GL transactions, and how vendor payments map to tax schedules. <span class="hl">Domain expertise + AI engineering</span> — that's the combination.</p>
+        <div class="pullquote">"Accountants who can code are common. Accountants who've designed, built, and deployed AI applications that automate real accounting workflows — that's a different conversation entirely."</div>
+      </div>
+      <div class="info-cards reveal">
+        <div class="info-card">
+          <div class="tag">Education</div>
+          <h4>M.S. Business Analytics</h4>
+          <small>Baruch College (CUNY), Zicklin · Data Analytics concentration · CPA 150-credit education eligible · Expected May 2027</small>
+        </div>
+        <div class="info-card">
+          <div class="tag">Background</div>
+          <h4>Tax Accounting → AI Engineering</h4>
+          <small>Rowshan &amp; Co — 1099/W-2 processing, QuickBooks bookkeeping, reconciliations, client &amp; agency (IRS/EDD/FTB) coordination</small>
+        </div>
+        <div class="info-card">
+          <div class="tag">Approach</div>
+          <h4>Self-directed, mentored</h4>
+          <small>Design, build, and project management are my own; two industry mentors — one in AI, one in engineering — set rough direction and provide career support</small>
+        </div>
+        <div class="info-card">
+          <div class="tag">Target roles</div>
+          <h4>Tax Tech · AI Accounting · Data Analytics</h4>
+          <small>Open to advisory teams, Tax Tech startups, and firms building AI capabilities · Korean (Native) · English (Fluent)</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Projects</span>
+      <h2>Accounting Meets AI.<br>One finite portfolio.</h2>
+      <p class="sub">A self-directed suite of connected accounting tools — each born from a real pain point on the job. It's scoped to end: three main apps, two I'm designing on my own, all converging into one hub.</p>
+    </div>
+
+    <div class="portfolio-note reveal">
+      <div class="arc">The mother project finishes<br>when every app folds back<br>into <b style="color:var(--gold)">TAU</b> — one hub.</div>
+      <div class="arc-steps">
+        <span><b>PREPARE</b> · deployed</span>
+        <span><b>CASSIA</b> · deployed</span>
+        <span><b>LUCENT</b> · built, deploying</span>
+        <span><b>IRS Form Processor</b> · in design</span>
+        <span><b>Tax Schedule Classifier</b> · in design</span>
+        <span>↳ minimized into <b>TAU hub</b></span>
+      </div>
+    </div>
+
+    <!-- PREPARE -->
+    <article class="proj reveal">
+      <div class="proj-visual pv-blue">
+        <div class="mock" style="position:static;width:290px;box-shadow:0 18px 44px rgba(62,92,138,.22)">
+          <div class="bar"><i></i><i></i><i></i><span class="u">prepare · reconciliation prep</span></div>
+          <div class="ttl">📄 Per-Statement Review</div>
+          <div class="row"><span class="k">Rows parsed</span><span class="v">39</span></div>
+          <div class="row"><span class="k">Included (vendor pay)</span><span class="v badge b-green">31</span></div>
+          <div class="row"><span class="k">Excluded</span><span class="v">8 · payroll + balance</span></div>
+          <div class="row"><span class="k">Source A · reconcile</span><span class="badge b-amber">$150 off</span></div>
+          <div class="row"><span class="k">Source B · extraction</span><span class="badge b-green">complete ✓</span></div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">Project 01 · Main app</div>
+        <h3>PREPARE</h3>
+        <span class="proj-status st-live"><span class="st-dot"></span>Deployed · Live</span>
+        <p class="desc">A reconciliation prep engine. Turns messy bank and credit card statement PDFs into review-ready 1099 pre-reconciliation workbooks — the workbook a CPA reviews <em>before</em> filing. Not a filer.</p>
+        <ul class="feat">
+          <li>Row-level transaction classification via Claude PDF Skill (Agent SDK)</li>
+          <li>Two orthogonal integrity checks — statement math vs. extraction completeness</li>
+          <li>"Transcribe, don't compute" — AI reads &amp; labels, deterministic logic does the math</li>
+          <li>Per-statement, consolidated, and audit-ready Excel surfaces</li>
+        </ul>
+        <div class="tags">
+          <span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">Claude Agent SDK</span><span class="chip">PDF Skill</span><span class="chip">openpyxl</span>
+        </div>
+        <div class="proj-links">
+          <!-- TODO: replace # with PREPARE live demo URL -->
+          <a href="#" class="btn btn-dark">Live Demo →</a>
+          <a href="https://github.com/sanghyun-s/PREPARE" class="btn btn-ghost">GitHub</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CASSIA -->
+    <article class="proj rev reveal">
+      <div class="proj-visual pv-purple">
+        <div class="mock" style="position:static;width:270px;box-shadow:0 18px 44px rgba(107,84,166,.22)">
+          <div class="bar"><i></i><i></i><i></i><span class="u">cassia · no-login workspace</span></div>
+          <div class="bubble">What's our overdue AP — and what does the IRS say?</div>
+          <div class="row" style="border:0;padding-top:0"><span class="v" style="font-size:10.5px">$18,400 overdue · Pub 15 cited</span><span class="badge b-blue">BOTH</span></div>
+          <div class="barchart"><span style="height:50%"></span><span style="height:70%"></span><span style="height:44%"></span><span style="height:88%"></span><span style="height:60%"></span></div>
+          <div style="margin-top:9px;display:flex;gap:6px"><span class="chip">SQL</span><span class="chip">RAG</span><span class="chip">recall</span></div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">Project 02 · Main app</div>
+        <h3>CASSIA</h3>
+        <span class="proj-status st-live"><span class="st-dot"></span>Deployed · Live · No-login</span>
+        <p class="desc">A chat-based accounting support workspace for small-business follow-up work. Ask in plain English; it routes to your books, the tax docs, or your saved work — and remembers findings by meaning. <em>Formerly CoReckoner.</em></p>
+        <ul class="feat">
+          <li>Hybrid router — Text-to-SQL, RAG, both, or semantic recall</li>
+          <li>Grounded answers with citations, tables, and auto-generated charts</li>
+          <li>Per-session document Q&amp;A, saved-answer recall, topic organization</li>
+          <li>Deployed no-login; the full account system is built and frozen, re-enablable</li>
+        </ul>
+        <div class="tags">
+          <span class="chip">FastAPI</span><span class="chip">OpenAI</span><span class="chip">ChromaDB</span><span class="chip">Text-to-SQL</span><span class="chip">LangChain</span><span class="chip">Plotly</span>
+        </div>
+        <div class="proj-links">
+          <!-- TODO: replace # with CASSIA (Render) live demo URL -->
+          <a href="#" class="btn btn-dark">Live Demo →</a>
+          <!-- TODO: confirm repo slug: /cassia vs /accounting-ai-chatbot -->
+          <a href="https://github.com/sanghyun-s/cassia" class="btn btn-ghost">GitHub</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- LUCENT -->
+    <article class="proj reveal">
+      <div class="proj-visual pv-pink">
+        <div class="mock" style="position:static;width:280px;box-shadow:0 18px 44px rgba(176,84,106,.2)">
+          <div class="bar"><i></i><i></i><i></i><span class="u">lucent · pre-audit packet</span></div>
+          <div class="ttl">📊 Review Queue</div>
+          <div class="tier">
+            <div><span class="n" style="color:var(--red)">7</span><span class="l">High</span></div>
+            <div><span class="n" style="color:var(--amber)">12</span><span class="l">Medium</span></div>
+            <div><span class="n" style="color:var(--green)">981</span><span class="l">Monitor</span></div>
+          </div>
+          <div class="row"><span class="k">$4,790 · Acme LLC</span><span class="badge b-amber">override</span></div>
+          <div class="row"><span class="k">weekend · round #</span><span class="badge b-blue">0.67</span></div>
+          <div class="row"><span class="k">missing memo</span><span class="badge b-green">memo ✓</span></div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">Project 03 · Main app</div>
+        <h3>LUCENT</h3>
+        <span class="proj-status st-built"><span class="st-dot"></span>Built · Deploying next</span>
+        <p class="desc">A pre-audit review packet for general-ledger exports. Narrows a large transaction population into a prioritized review queue, explains each risk indicator in plain language, and shows what evidence to request — <em>risk indication, not fraud detection.</em> <span style="color:var(--muted)">(rebranded from ARGUS)</span></p>
+        <ul class="feat">
+          <li>ML finds — Isolation Forest, 200 trees, label-free</li>
+          <li>Audit logic adjusts — materiality filter + PCAOB AS 2401 qualitative override</li>
+          <li>GPT explains — a validated 7-field memo with deterministic fallback</li>
+          <li>Anchored to AU-C 315, PCAOB AS 2401/2201, and COSO 2013</li>
+        </ul>
+        <div class="tags">
+          <span class="chip">FastAPI</span><span class="chip">Next.js 14</span><span class="chip">scikit-learn</span><span class="chip">Isolation Forest</span><span class="chip">shadcn/ui</span><span class="chip">PCAOB</span>
+        </div>
+        <div class="proj-links">
+          <span class="btn btn-ghost" style="opacity:.6;cursor:default">Demo deploying (Phase 6)</span>
+          <!-- TODO: repo rename to /lucent-pre-audit-review-packet is planned; confirm current slug -->
+          <a href="https://github.com/sanghyun-s/ai-audit-risk-analyzer" class="btn btn-ghost">GitHub</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- SELF-DIRECTED + HUB -->
+    <div class="sec-head reveal" style="margin-top:56px">
+      <span class="eyebrow">The arc continues</span>
+      <h2 style="font-size:clamp(24px,3vw,34px)">Two more apps, then the hub.</h2>
+      <p class="sub">Designed and built on my own — the pieces that close the loop of a full accounting workflow.</p>
+    </div>
+    <div class="arc-band reveal">
+      <div class="arc-card">
+        <div class="k">App 04 · Self-directed · In design</div>
+        <h4>IRS Form Processor</h4>
+        <p>A guided 1099/W-9 preparation and review workspace: collect vendor identity, detect reportable payment candidates from the books, validate TIN and missing-field issues, and export review-ready workpapers for accountant approval. Preparation and review — not e-filing.</p>
+      </div>
+      <div class="arc-card">
+        <div class="k">App 05 · Self-directed · In design</div>
+        <h4>Tax Schedule Classifier</h4>
+        <p>Reviews vendor, GL, and P&amp;L detail and proposes likely Schedule C/E/F line-item candidates with reasoning, confidence, and review flags for tax-preparer approval. It proposes candidates — it doesn't prepare or file a return.</p>
+      </div>
+      <div class="arc-card hub">
+        <div class="k">The hub · Convergence</div>
+        <h4>TAU</h4>
+        <p>Transaction Agent Ultimate — where the portfolio began as a prototype, and where it ends. Each shipped app is compressed into a compact add-on, so the whole suite lives in one place. When all five fold in, the mission is complete.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack" class="stack">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Stack</span>
+      <h2>Built with<br>production-grade tools.</h2>
+      <p class="sub">Every technology chosen to solve a real accounting problem — not for résumé decoration.</p>
+    </div>
+    <div class="stack-grid reveal">
+      <div class="tech"><span class="ic">🐍</span><h4>Python</h4><small>Core language across every app, pipeline, and ML layer</small></div>
+      <div class="tech"><span class="ic">⚡</span><h4>FastAPI</h4><small>Typed API backends serving all three main apps</small></div>
+      <div class="tech"><span class="ic">🤖</span><h4>Claude Agent SDK</h4><small>PDF Skill for row-level statement classification in PREPARE</small></div>
+      <div class="tech"><span class="ic">▲</span><h4>Next.js 14</h4><small>React frontend + shadcn/ui for LUCENT's review packet</small></div>
+      <div class="tech"><span class="ic">🔧</span><h4>scikit-learn</h4><small>Isolation Forest &amp; weak-label Random Forest for anomaly triage</small></div>
+      <div class="tech"><span class="ic">🗄️</span><h4>ChromaDB</h4><small>Vector store for CASSIA's RAG retrieval and semantic recall</small></div>
+      <div class="tech"><span class="ic">💬</span><h4>OpenAI API</h4><small>gpt-4o-mini for routing, narrative memos, and embeddings</small></div>
+      <div class="tech"><span class="ic">📊</span><h4>Plotly &amp; openpyxl</h4><small>Interactive charts and audit-ready Excel workbook generation</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Journey</span>
+      <h2>From manual tax prep<br>to AI automation.</h2>
+      <p class="sub">A self-directed build arc — each app stacking on the last, from a first prototype toward a finite, connected portfolio.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item tl-left">
+        <div class="tl-card"><div class="k k-gold">Origin · The problem</div><h4>Manual 1099 &amp; W-2 season</h4><p>Hundreds of forms by hand at Rowshan &amp; Co. Every app traces back to a frustration from this desk.</p></div>
+        <div class="tl-node"><i></i></div><div class="empty"></div>
+      </div>
+      <div class="tl-item tl-right">
+        <div class="empty"></div><div class="tl-node"><i style="background:var(--gold)"></i></div>
+        <div class="tl-card"><div class="k k-gold">Foundation</div><h4>Python · PDF parsing · prompt engineering</h4><p>The building blocks — and TAU, the experimental prototype hub where the portfolio started.</p></div>
+      </div>
+      <div class="tl-item tl-left">
+        <div class="tl-card"><div class="k k-blue">App 01 · Deployed</div><h4>PREPARE</h4><p>Built, validated, deployed. A reconciliation prep engine solving the exact 1099 problem I did by hand.</p></div>
+        <div class="tl-node"><i style="background:var(--blue-ink)"></i></div><div class="empty"></div>
+      </div>
+      <div class="tl-item tl-right">
+        <div class="empty"></div><div class="tl-node"><i style="background:var(--purple-ink)"></i></div>
+        <div class="tl-card"><div class="k k-purple">App 02 · Deployed</div><h4>CASSIA</h4><p>Hybrid RAG + Text-to-SQL support workspace with semantic recall. Deployed no-login.</p></div>
+      </div>
+      <div class="tl-item tl-left">
+        <div class="tl-card"><div class="k k-pink">App 03 · Deploying</div><h4>LUCENT</h4><p>ML anomaly detection, audit-calibrated scoring, and validated GPT memos. Built; deployment next.</p></div>
+        <div class="tl-node"><i style="background:var(--pink-ink)"></i></div><div class="empty"></div>
+      </div>
+      <div class="tl-item tl-right">
+        <div class="empty"></div><div class="tl-node"><i style="background:var(--gold)"></i></div>
+        <div class="tl-card"><div class="k k-gold">Apps 04–05 · Self-directed</div><h4>IRS Form Processor · Tax Schedule Classifier</h4><p>Two more apps in design, closing the loop from payment records to tax-schedule workpapers.</p></div>
+      </div>
+      <div class="tl-item tl-left">
+        <div class="tl-card"><div class="k k-green">Convergence · Finish line</div><h4>Everything folds into TAU</h4><p>Each app minimized into one hub. When all five fold in, the mother project is complete.</p></div>
+        <div class="tl-node"><i style="background:var(--green)"></i></div><div class="empty"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-card reveal">
+      <h2>Let's build the future<br>of accounting together.</h2>
+      <p>Looking for opportunities in Tax Tech, AI Accounting, or Data Analytics. Open to advisory teams, Tax Tech startups, and firms investing in AI capabilities.</p>
+      <div class="contact-cta">
+        <!-- TODO: set your preferred public email -->
+        <a href="mailto:your-email@example.com" class="btn btn-gold">✉ Email Me</a>
+        <a href="https://www.linkedin.com/in/sam-seong/" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)">in LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <a href="#top" class="foot-brand"><span class="dot"></span>Sang-Hyun Seong</a>
+    <div class="foot-links">
+      <a href="#about">About</a><a href="#projects">Projects</a><a href="#stack">Stack</a><a href="#journey">Journey</a><a href="#contact">Contact</a>
+    </div>
+    <div class="foot-credit">© 2026 Sang-Hyun Seong · Accounting meets AI · Built with intent.</div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  (function(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = document.querySelectorAll('.reveal');
+    if(reduce || !('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
+    },{threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+    els.forEach(function(e){io.observe(e)});
+  })();
+</script>
+</body>
+</html>
